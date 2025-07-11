@@ -299,13 +299,23 @@ def main():
         if col.button(f"📝 Q{i+1}", help=question):
             selected_sample = question
     
-    # Question input
+   # Make sure session_state.question exists
+    if "question" not in st.session_state:
+          st.session_state.question = ""
+
+# If a sample question was clicked, override session state
+    if selected_sample:
+          st.session_state.question = selected_sample
+
+# Show the input field with the current session question
     question = st.text_area(
         "Enter your question:",
-        value=selected_sample if selected_sample else "",
+        value=st.session_state.question,
         placeholder="e.g., What is the average loan amount for approved loans?",
-        height=100
+        height=100,
+        key="question_input"
     )
+
     
     # Process question
     if st.button("🔍 **Get Answer**", type="primary") and question.strip():
