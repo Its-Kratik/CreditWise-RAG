@@ -1,0 +1,21 @@
+# .streamlit/config.toml
+# Optional configuration for better user experience
+
+[theme]
+# Choose from "light" or "dark"
+base = "light"
+primaryColor = "#667eea"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f8fafc"
+textColor = "#1f2937"
+
+[server]
+# Performance optimizations
+maxUploadSize = 200
+maxMessageSize = 200
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+# Automatically open browser when running locally
+gatherUsageStats = false
