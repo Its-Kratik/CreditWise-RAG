@@ -59,7 +59,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Core functions
-@st.cache_data
 def load_sample_data():
     """Generate sample loan data for demonstration"""
     np.random.seed(42)
