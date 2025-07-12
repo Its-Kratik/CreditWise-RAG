@@ -26,7 +26,7 @@ def max_applicant_income_handler(df, question=None):
     return f"The maximum applicant income is **{max_income}**."
 
 def median_loan_amount_handler(df, question=None):
-    median = df["LoanAmount"].median()
+    median = df["loanAmount"].median()
     return f"The median loan amount is **{median:.2f}**."
 
 def gender_wise_approval_rate_handler(df, question=None):
@@ -56,7 +56,7 @@ def applicants_with_more_dependents_handler(df, question=None):
 
 def avg_loan_high_income_handler(df, question=None):
     high_income_df = df[df["ApplicantIncome"] > 10000]
-    avg = high_income_df["LoanAmount"].mean()
+    avg = high_income_df["loanAmount"].mean()
     return f"Average loan amount for applicants with income > ₹10,000: **{avg:.2f}**."
 
 
