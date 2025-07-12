@@ -82,6 +82,8 @@ def dispatch_math_query(qtype, df, question):
         "avg_income_by_property_area": avg_income_by_property_area_handler,
         "applicants_with_more_dependents": applicants_with_more_dependents_handler,
         "avg_loan_high_income": avg_loan_high_income_handler
+        "average_interest_rate": average_interest_rate_handler
+
     }
     if qtype in dispatcher:
         return dispatcher[qtype](df, question)
