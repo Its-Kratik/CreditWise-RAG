@@ -67,7 +67,7 @@ def load_sample_data():
     data = {
         'loan_id': [f'LN{str(i).zfill(6)}' for i in range(1, n_records + 1)],
         'borrower_name': [f'Borrower_{i}' for i in range(1, n_records + 1)],
-        'loan_amount': np.random.normal(50000, 20000, n_records).round(2),
+        'loanamount': np.random.normal(50000, 20000, n_records).round(2),
         'interest_rate': np.random.normal(7.5, 2.5, n_records).round(2),
         'term_months': np.random.choice([12, 24, 36, 48, 60], n_records),
         'credit_score': np.random.randint(300, 850, n_records),
@@ -80,7 +80,7 @@ def load_sample_data():
     df = pd.DataFrame(data)
     
     # Calculate monthly payment using loan formula
-    principal = df['loan_amount']
+    principal = df['loanamount']
     rate = df['interest_rate'] / 100 / 12
     months = df['term_months']
     df['monthly_payment'] = (principal * rate * (1 + rate)**months) / ((1 + rate)**months - 1)
@@ -96,7 +96,7 @@ def generate_answer_smart(df: pd.DataFrame, question: str, **kwargs) -> str:
         # Statistical queries
         if any(word in question_lower for word in ['average', 'mean', 'avg']):
             if 'loan amount' in question_lower:
-                avg_amount = df['loan_amount'].mean()
+                avg_amount = df['loanamount'].mean()
                 return f"The average loan amount is **${avg_amount:,.2f}**"
             elif 'interest rate' in question_lower:
                 avg_rate = df['interest_rate'].mean()
@@ -121,7 +121,7 @@ def generate_answer_smart(df: pd.DataFrame, question: str, **kwargs) -> str:
         # Highest/lowest queries
         elif 'highest' in question_lower or 'maximum' in question_lower:
             if 'loan amount' in question_lower:
-                max_amount = df['loan_amount'].max()
+                max_amount = df['loanamount'].max()
                 return f"The highest loan amount is **${max_amount:,.2f}**"
             elif 'interest rate' in question_lower:
                 max_rate = df['interest_rate'].max()
@@ -129,7 +129,7 @@ def generate_answer_smart(df: pd.DataFrame, question: str, **kwargs) -> str:
         
         elif 'lowest' in question_lower or 'minimum' in question_lower:
             if 'loan amount' in question_lower:
-                min_amount = df['loan_amount'].min()
+                min_amount = df['loanamount'].min()
                 return f"The lowest loan amount is **${min_amount:,.2f}**"
             elif 'interest rate' in question_lower:
                 min_rate = df['interest_rate'].min()
@@ -167,7 +167,7 @@ def retrieve_similar_docs(df: pd.DataFrame, question: str) -> List[Dict[str, Any
         for _, row in high_credit.iterrows():
             relevant_docs.append({
                 'loan_id': row['loan_id'],
-                'content': f"Loan {row['loan_id']}: ${row['loan_amount']:,.2f} at {row['interest_rate']:.2f}% for borrower with credit score {row['credit_score']}"
+                'content': f"Loan {row['loan_id']}: ${row['loanamount']:,.2f} at {row['interest_rate']:.2f}% for borrower with credit score {row['credit_score']}"
             })
     
     elif 'approved loan' in question_lower:
@@ -175,7 +175,7 @@ def retrieve_similar_docs(df: pd.DataFrame, question: str) -> List[Dict[str, Any
         for _, row in approved.iterrows():
             relevant_docs.append({
                 'loan_id': row['loan_id'],
-                'content': f"Approved Loan {row['loan_id']}: ${row['loan_amount']:,.2f} at {row['interest_rate']:.2f}%"
+                'content': f"Approved Loan {row['loan_id']}: ${row['loanamount']:,.2f} at {row['interest_rate']:.2f}%"
             })
     
     return relevant_docs
@@ -246,7 +246,7 @@ def main():
             uploaded_file = st.file_uploader(
                 "Upload loan data CSV",
                 type=['csv'],
-                help="CSV should contain columns: loan_amount, interest_rate, credit_score, loan_status"
+                help="CSV should contain columns: loanamount, interest_rate, credit_score, loan_status"
             )
     
     # Load data
@@ -267,7 +267,7 @@ def main():
             with col1:
                 st.metric("Total Loans", f"{len(df):,}")
             with col2:
-                avg_amount = df['loan_amount'].mean()
+                avg_amount = df['loanamount'].mean()
                 st.metric("Avg Loan Amount", f"${avg_amount:,.0f}")
             with col3:
                 avg_rate = df['interest_rate'].mean()
