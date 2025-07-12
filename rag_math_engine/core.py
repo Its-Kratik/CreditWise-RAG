@@ -8,7 +8,7 @@ from .patterns import detect_math_query_type
 
 def average_loan_graduates_handler(df, question=None):
     grad_df = df[df["Education"] == "Graduate"]
-    avg = grad_df["LoanAmount"].mean()
+    avg = grad_df["loanAmount"].mean()
     return f"The average loan amount for graduates is **{avg:.2f}**."
 
 def approval_rate_self_employed_handler(df, question=None):
