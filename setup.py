@@ -5,7 +5,7 @@ setup(
     name="rag_math_engine",
     version="0.1.0",
     description="Smart math-aware RAG query engine for tabular data",
-    author="Your Name",
+    author="Kratik Jain",
     packages=find_packages(),
     install_requires=[
         "pandas",
