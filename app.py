@@ -253,8 +253,7 @@ def main():
     try:
         if data_source == "Upload CSV" and uploaded_file is not None:
             df = pd.read_csv(uploaded_file)
-            df.columns = df.columns.str.strip()     # ✅ remove leading/trailing spaces
-            df.columns = df.columns.str.lower()     # ✅ convert all column names to lowercase
+            df.columns = df.columns.str.strip().str.lower()
             st.success(f"✅ Loaded {len(df):,} records from uploaded file")
         else:
             df = load_sample_data()
