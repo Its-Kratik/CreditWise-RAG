@@ -81,7 +81,12 @@ def load_sample_data():
     
     # Calculate monthly payment using loan formula
     principal = df['loanamount']
-    rate = df.interestrate / 100 / 12
+    if "interestrate" in df.columns:
+        rate = df["interestrate"] / 100 / 12
+    else:
+        st.warning("⚠️ This dataset does not contain an 'InterestRate' column.")
+        rate = None  # Optional: fallback to zero or default value
+
     months = df['term_months']
     df['monthly_payment'] = (principal * rate * (1 + rate)**months) / ((1 + rate)**months - 1)
     df['monthly_payment'] = df['monthly_payment'].round(2)
@@ -99,7 +104,7 @@ def generate_answer_smart(df: pd.DataFrame, question: str, **kwargs) -> str:
                 avg_amount = df['loanamount'].mean()
                 return f"The average loan amount is **${avg_amount:,.2f}**"
             elif 'interestrate' in question_lower:
-                avg_rate = df.interestrate.mean()
+                avg_rate = df["interestrate"].mean() if "interestrate" in df.columns else None
                 return f"The average interest rate is **{avg_rate:.2f}%**"
             elif 'credit score' in question_lower:
                 avg_score = df['credit_score'].mean()
@@ -124,7 +129,7 @@ def generate_answer_smart(df: pd.DataFrame, question: str, **kwargs) -> str:
                 max_amount = df['loanamount'].max()
                 return f"The highest loan amount is **${max_amount:,.2f}**"
             elif 'interestrate' in question_lower:
-                max_rate = df.interestrate.max()
+                max_rate = df["interestrate"].max() if "interestrate" in df.columns else None
                 return f"The highest interest rate is **{max_rate:.2f}%**"
         
         elif 'lowest' in question_lower or 'minimum' in question_lower:
@@ -132,7 +137,7 @@ def generate_answer_smart(df: pd.DataFrame, question: str, **kwargs) -> str:
                 min_amount = df['loanamount'].min()
                 return f"The lowest loan amount is **${min_amount:,.2f}**"
             elif 'interest rate' in question_lower:
-                min_rate = df. interestrate.min()
+                min_rate = df["interestrate"].max() if "interestrate" in df.columns else None
                 return f"The lowest interest rate is **{min_rate:.2f}%**"
         
         # Credit score analysis
@@ -270,7 +275,7 @@ def main():
                 avg_amount = df['loanamount'].mean()
                 st.metric("Avg Loan Amount", f"${avg_amount:,.0f}")
             with col3:
-                avg_rate = df.interestrate.mean()
+                avg_rate = df["interestrate"].mean() if "interestrate" in df.columns else None
                 st.metric("Avg Interest Rate", f"{avg_rate:.2f}%")
             with col4:
                 approved_pct = (len(df[df['loan_status'] == 'Approved']) / len(df)) * 100
