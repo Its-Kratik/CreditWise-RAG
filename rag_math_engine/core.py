@@ -8,7 +8,7 @@ from .patterns import detect_math_query_type
 
 def average_loan_graduates_handler(df, question=None):
     grad_df = df[df["Education"] == "Graduate"]
-    avg = grad_df["loanAmount"].mean()
+    avg = grad_df["loanamount"].mean()
     return f"The average loan amount for graduates is **{avg:.2f}**."
 
 def approval_rate_self_employed_handler(df, question=None):
@@ -26,7 +26,7 @@ def max_applicant_income_handler(df, question=None):
     return f"The maximum applicant income is **{max_income}**."
 
 def median_loan_amount_handler(df, question=None):
-    median = df["loanAmount"].median()
+    median = df["loanamount"].median()
     return f"The median loan amount is **{median:.2f}**."
 
 def gender_wise_approval_rate_handler(df, question=None):
@@ -56,7 +56,7 @@ def applicants_with_more_dependents_handler(df, question=None):
 
 def avg_loan_high_income_handler(df, question=None):
     high_income_df = df[df["ApplicantIncome"] > 10000]
-    avg = high_income_df["loanAmount"].mean()
+    avg = high_income_df["loanamount"].mean()
     return f"Average loan amount for applicants with income > ₹10,000: **{avg:.2f}**."
 
 
