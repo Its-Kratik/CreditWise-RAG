@@ -5,6 +5,12 @@ from .patterns import detect_math_query_type
 # ------------------------
 # Dispatchable Math Handlers
 # ------------------------
+def average_interest_rate_handler(df, question=None):
+    if "interestrate" not in df.columns:
+        return "❌ This dataset does not contain 'InterestRate'. Please upload one that includes it."
+    
+    avg = df["interestrate"].mean()
+    return f"The average interest rate is **{avg:.2f}%**."
 
 def average_loan_graduates_handler(df, question=None):
     grad_df = df[df["Education"] == "Graduate"]
