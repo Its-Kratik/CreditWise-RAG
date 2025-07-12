@@ -82,6 +82,20 @@ def load_custom_css():
             margin: 1rem 0;
             color: #d97706;
         }
+        .quick-question-btn {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            padding: 0.5rem;
+            margin: 0.2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .quick-question-btn:hover {
+            background: #0ea5e9;
+            color: white;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -635,10 +649,11 @@ def main():
 
             # Initialize session state for selected question
             if 'selected_question' not in st.session_state:
-               st.session_state.selected_question = ""
+                st.session_state.selected_question = ""
+
             # Sample question buttons
             st.markdown("**🚀 Quick Start Questions:**")
-            
+
             sample_questions = [
                 "What is the average loan amount?",
                 "How many loans were approved?",
@@ -646,14 +661,14 @@ def main():
                 "What is the highest interest rate?",
                 "Compare approved vs rejected loans"
             ]
-            
+
             cols = st.columns(len(sample_questions))
 
-            for i, (col, question) in enumerate(zip(cols, sample_questions)):
-                if col.button(f"💡 Q{i+1}", help=question, key=f"sample_q_{i}"):
-                    st.session_state.selected_question = question
+            for i, (col, question_text) in enumerate(zip(cols, sample_questions)):
+                if col.button(f"💡 Q{i+1}", help=question_text, key=f"sample_q_{i}"):
+                    st.session_state.selected_question = question_text
                     st.rerun()
-            
+
             # Question input
             question = st.text_area(
                 "✍️ Enter your question:",
@@ -662,9 +677,11 @@ def main():
                 height=100,
                 key="question_input"
             )
-# Sync manual typing with session state
-           if question != st.session_state.selected_question:
-              st.session_state.selected_question = question
+
+            # Sync manual typing with session state
+            if question != st.session_state.selected_question:
+                st.session_state.selected_question = question
+
             # Analysis button
             col1, col2 = st.columns([3, 1])
             with col1:
@@ -713,6 +730,7 @@ def main():
                         
                         with col1:
                             if st.button("❓ Ask Another Question", key="ask_another"):
+                                st.session_state.selected_question = ""
                                 st.rerun()
                         
                         with col2:
