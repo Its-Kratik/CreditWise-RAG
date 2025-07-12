@@ -632,7 +632,10 @@ def main():
             
             # Question input interface
             st.header("💬 Ask Your Question")
-            
+
+            # Initialize session state for selected question
+            if 'selected_question' not in st.session_state:
+               st.session_state.selected_question = ""
             # Sample question buttons
             st.markdown("**🚀 Quick Start Questions:**")
             
@@ -645,27 +648,30 @@ def main():
             ]
             
             cols = st.columns(len(sample_questions))
-            selected_sample = None
-            
+
             for i, (col, question) in enumerate(zip(cols, sample_questions)):
                 if col.button(f"💡 Q{i+1}", help=question, key=f"sample_q_{i}"):
-                    selected_sample = question
+                    st.session_state.selected_question = question
+                    st.rerun()
             
             # Question input
             question = st.text_area(
                 "✍️ Enter your question:",
-                value=selected_sample if selected_sample else "",
+                value=st.session_state.selected_question,
                 placeholder="e.g., What is the average loan amount for approved loans with credit scores above 750?",
                 height=100,
                 key="question_input"
             )
-            
+# Sync manual typing with session state
+           if question != st.session_state.selected_question:
+              st.session_state.selected_question = question
             # Analysis button
             col1, col2 = st.columns([3, 1])
             with col1:
                 analyze_button = st.button("🔍 **Analyze Question**", type="primary")
             with col2:
                 if st.button("🔄 Clear"):
+                    st.session_state.selected_question = ""
                     st.rerun()
             
             # Process question
